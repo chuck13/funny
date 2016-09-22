@@ -9,6 +9,7 @@
 import Cocoa
 
 class ViewController: NSViewController {
+    @IBOutlet weak var display: NSTextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,55 @@ class ViewController: NSViewController {
         }
     }
 
-
+    @IBAction func appendDigit(_ sender: NSButton) {
+        let digit = sender.title
+        if isTyping
+        {
+            display.stringValue = display.stringValue + digit
+        }
+        else
+        {
+            isTyping = true
+            display.stringValue = digit
+        }
+    }
+    @IBAction func returnNumber (_ sender: NSButton) {
+        finishTyping ()
+        calculate ()
+    }
+    @IBAction func operate(_ sender: NSButton) {
+        let op = sender.title
+        switch (op)
+        {
+        case "+":
+            finishTyping()
+            break
+        default:
+            break
+        }
+    }
+    
+    var isTyping = false
+    var operandArray = Array<Double>()
+    func calculate ()
+    {
+        if operandArray.count >= 2
+        {
+            display.doubleValue = plus (operandArray.removeLast(), operandArray.removeLast())
+        }
+    }
+    func finishTyping ()
+    {
+        if isTyping
+        {
+            isTyping = false;
+            operandArray.append (display.doubleValue)
+            print (operandArray)
+        }
+    }
+    func plus (_ op1: Double, _ op2: Double) -> Double
+    {
+        return op1 + op2
+    }
 }
 
